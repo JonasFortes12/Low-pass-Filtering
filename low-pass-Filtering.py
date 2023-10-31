@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Função para plotagem de gráficos
-def plot_graph(x, y, title, xlabel, ylabel, label='', color='blue' ):
+def plot_graph(x, y,title, xlabel, ylabel, y2=None, label='',label2='', color='blue', color2='red'):
     plt.figure(figsize=(8, 4))
     plt.plot(x, y, label=label, color=color)
+    if(y2 is not None):
+        plt.plot(x, y2, label=label2, color=color2)
     # Adicionar um título ao gráfico
     plt.title(title)
     # Adicionar rótulos aos eixos
@@ -93,8 +95,7 @@ plot_graph(frequencies, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (
 #__________________________ Questão 07 _____________________________________
 
 # Realiza a convolução discreta para filtrar o sinal x[n] com a resposta ao impulso h[n]
-
-Yn = np.convolve(Xn, h_ideal, mode='full') 
+Yn = np.convolve(Xn, h_ideal, mode='same') 
 n = np.arange(len(Yn))
 
 plot_graph(n, Yn,  'Sinal de Saída y[n] ( x[n]*h[n] )', 'Tempo', 'Amplitude')
@@ -109,3 +110,19 @@ YnFT = np.abs(np.fft.fftshift(np.fft.fft(Yn)))
 x =  np.linspace(-np.pi, np.pi, len(YnFT))
 
 plot_graph(x, YnFT, 'Módulo da FT do sinal Y[n]', 'Frequência', 'Amplitude', color='black')
+
+#__________________________ Questão 09 _____________________________________
+
+# Gerando o sinal g[n]
+
+N = 100  # Número de amostras
+n = np.arange(N)  # Vetor de amostras de 0 a N-1
+
+# Frequências desejadas em radianos por amostra
+frequencies = [0.1 * mt.pi, 0.6 * mt.pi]
+
+# Gera o sinal somando as componentes de frequência
+Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
+
+plot_graph(n, Gn, 'Sinal de G[n]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n]', 'Sinal y[n-a]')
+
