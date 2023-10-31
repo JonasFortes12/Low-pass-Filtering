@@ -62,3 +62,13 @@ h_ideal[a] = cutOffFreq / np.pi  # Lidando com a divisão por zero
 
 plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Tempo', 'Amplitude')
 
+
+#__________________________ Questão 04 _____________________________________
+
+# Calcula o módulo da resposta em frequência do sistema (FT da reposta ao impulso h[n])
+h_idealFT = np.abs(np.fft.fftshift(np.fft.fft(h_ideal)))
+
+# Calcula as frequências correspondentes às amostras
+freqs = np.fft.fftfreq(M)
+
+plot_graph(freqs, h_idealFT, 'Módulo da Resposta em Frequência do Sistema', 'Frequência', 'Amplitude', color='black')
