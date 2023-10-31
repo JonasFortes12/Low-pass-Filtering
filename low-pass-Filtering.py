@@ -89,7 +89,10 @@ plot_graph(x, phase_h_idealFT, 'Resposta em Fase do Sistema', 'Frequência', 'Am
 # Calcula o atraso de grupo do sistema 
 frequencies, groupDelay = signal.group_delay((h_ideal, 1))
 
-plot_graph(frequencies, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample)', 'Atraso de Grupo (samples)')
+# Definir valores do eixo X
+x = np.linspace(-np.pi, np.pi, len(groupDelay))
+
+plot_graph(x, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample)', 'Atraso de Grupo (samples)')
 
 
 #__________________________ Questão 07 _____________________________________
@@ -150,7 +153,10 @@ b, a = signal.butter(order, cutOffFreq, btype='low')
 # Calcula a resposta em frequência do filtro Butterworth 
 w, hFreqResponse = signal.freqz(b, a)
 
-plot_graph(w, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência (rad/sample)', 'Amplitude', color='green')
+# Definir valores do eixo X
+x = np.linspace(-np.pi, np.pi, len(hFreqResponse))
+
+plot_graph(x, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência (rad/sample)', 'Amplitude', color='green')
 
 
 #__________________________ Questão 13 _____________________________________
@@ -162,3 +168,13 @@ phase_hFreqResponse = np.angle(hFreqResponse)
 x = np.linspace(-np.pi, np.pi, len(phase_hFreqResponse))
 
 plot_graph(x, phase_hFreqResponse, 'Resposta em Fase do filtro Butterworth', 'Frequência', 'Amplitude', color='green')
+
+#__________________________ Questão 14 _____________________________________
+
+# Calcula o atraso de grupo do filtro Butterworth 
+frequencies, groupDelay = signal.group_delay((b, a))
+
+# Definir valores do eixo X
+x = np.linspace(-np.pi, np.pi, len(groupDelay))
+
+plot_graph(x, groupDelay, 'Atraso de Grupo do filtro Butterworth', 'Frequência', 'Atraso de Grupo (samples)', color='green')
