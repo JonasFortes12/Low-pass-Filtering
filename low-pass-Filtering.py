@@ -98,3 +98,14 @@ Yn = np.convolve(Xn, h_ideal, mode='full')
 n = np.arange(len(Yn))
 
 plot_graph(n, Yn,  'Sinal de Saída y[n] ( x[n]*h[n] )', 'Tempo', 'Amplitude')
+
+
+#__________________________ Questão 08 _____________________________________
+
+# Calcula o módulo da transformada de Fourier do sinal de saída y[n]
+YnFT = np.abs(np.fft.fftshift(np.fft.fft(Yn)))
+
+# Definir valores do eixo X
+x =  np.linspace(-np.pi, np.pi, len(YnFT))
+
+plot_graph(x, YnFT, 'Módulo da FT do sinal Y[n]', 'Frequência', 'Amplitude', color='black')
