@@ -41,5 +41,24 @@ freqs = np.fft.fftfreq(N)
 
 plot_graph(freqs, XnFT, 'Módulo da FT do sinal X[n]', 'Frequência', 'Amplitude', color='black')
 
+#__________________________ Questão 03 _____________________________________
 
+
+# Parâmetros do filtro passa-baixa ideal
+cutOffFreq = 0.75 * np.pi # Frequência de corte
+a = 15  # Atraso
+# Tamanho da resposta ao impulso
+M = 2 * a  # M = 30
+
+# Amostras de 0 até M-1
+n = np.arange(M)
+
+
+# Resposta ao impulso do filtro passa-baixa FIR com janela retangular
+# Normalização por (1 / pi) é uma convenção padrão
+h_ideal = (1 / np.pi) * np.sin(cutOffFreq * (n - a)) / (n - a)
+h_ideal[a] = cutOffFreq / np.pi  # Lidando com a divisão por zero
+
+
+plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Tempo', 'Amplitude')
 
