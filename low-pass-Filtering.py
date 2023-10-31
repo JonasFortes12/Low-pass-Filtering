@@ -186,3 +186,15 @@ Yn_Butterworth = signal.lfilter(b, a, Xn)
 n = np.arange(len(Yn_Butterworth))
 
 plot_graph(n, Yn_Butterworth,  'Sinal de Saída y[n] ( x[n] * Butterworth Filter )', 'Tempo', 'Amplitude')
+
+
+#__________________________ Questão 16 _____________________________________
+
+# Calcula o módulo da transformada de Fourier do sinal de saída y[n] pelo Butterworth
+Yn_ButterworthFT = np.abs(np.fft.fftshift(np.fft.fft(Yn_Butterworth)))
+
+# Definir valores do eixo X
+x =  np.linspace(-np.pi, np.pi, len(Yn_Butterworth))
+
+plot_graph(x, Yn_Butterworth, 'Módulo da FT do sinal Y[n] pelo Butterworth', 'Frequência', 'Amplitude', color='black')
+
