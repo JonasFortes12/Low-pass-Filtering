@@ -78,7 +78,7 @@ plot_graph(x, h_idealFT, 'Módulo da Resposta em Frequência do Sistema', 'Frequ
 
 #__________________________ Questão 05 _____________________________________
 
-# Calcula a resposta em fase da da resposta em frequência do sistema
+# Calcula a resposta em fase da resposta em frequência do sistema
 phase_h_idealFT = np.angle(h_idealFT)
 
 plot_graph(x, phase_h_idealFT, 'Resposta em Fase do Sistema', 'Frequência', 'Amplitude', color='green')
@@ -153,3 +153,12 @@ w, hFreqResponse = signal.freqz(b, a)
 plot_graph(w, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência (rad/sample)', 'Amplitude', color='green')
 
 
+#__________________________ Questão 13 _____________________________________
+
+# Calcula a resposta em fase da resposta em frequência do filtro Butterworth 
+phase_hFreqResponse = np.angle(hFreqResponse)
+
+# Definir valores do eixo X
+x = np.linspace(-np.pi, np.pi, len(phase_hFreqResponse))
+
+plot_graph(x, phase_hFreqResponse, 'Resposta em Fase do filtro Butterworth', 'Frequência', 'Amplitude', color='green')
