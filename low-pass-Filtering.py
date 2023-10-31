@@ -1,6 +1,7 @@
 import numpy as np
 import math as mt
 import matplotlib.pyplot as plt
+from scipy import signal
 
 # Função para plotagem de gráficos
 def plot_graph(x, y, title, xlabel, ylabel, label='', color='blue' ):
@@ -78,7 +79,15 @@ plot_graph(x, h_idealFT, 'Módulo da Resposta em Frequência do Sistema', 'Frequ
 # Calcula a resposta em fase da da resposta em frequência do sistema
 phase_h_idealFT = np.angle(h_idealFT)
 
-plot_graph(x, phase_h_idealFT, 'Resposta em Fase do Sistema', 'Frequência', 'Amplitude', color='black')
+plot_graph(x, phase_h_idealFT, 'Resposta em Fase do Sistema', 'Frequência', 'Amplitude', color='green')
 
 
+#__________________________ Questão 06 _____________________________________
 
+# Calcula o atraso de grupo do sistema 
+frequencies, groupDelay = signal.group_delay((h_ideal, 1))
+
+plot_graph(frequencies, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample)', 'Atraso de Grupo (samples)')
+
+
+#__________________________ Questão 06 _____________________________________
