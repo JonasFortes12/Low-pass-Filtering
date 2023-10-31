@@ -90,4 +90,11 @@ frequencies, groupDelay = signal.group_delay((h_ideal, 1))
 plot_graph(frequencies, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample)', 'Atraso de Grupo (samples)')
 
 
-#__________________________ Questão 06 _____________________________________
+#__________________________ Questão 07 _____________________________________
+
+# Realiza a convolução discreta para filtrar o sinal x[n] com a resposta ao impulso h[n]
+
+Yn = np.convolve(Xn, h_ideal, mode='full') 
+n = np.arange(len(Yn))
+
+plot_graph(n, Yn,  'Sinal de Saída y[n] ( x[n]*h[n] )', 'Tempo', 'Amplitude')
