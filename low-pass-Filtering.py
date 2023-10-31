@@ -124,5 +124,32 @@ frequencies = [0.1 * mt.pi, 0.6 * mt.pi]
 # Gera o sinal somando as componentes de frequência
 Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
 
-plot_graph(n, Gn, 'Sinal de G[n]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n]', 'Sinal y[n-a]')
+plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n]', 'Sinal y[n-a]')
+
+#__________________________ Questão 10 _____________________________________
+
+# Explicar aqui quais as vantagens e desvantagens 
+# deste filtro FIR a partir dos gráficos gerados até o momento
+
+
+
+#__________________________ Questão 11 _____________________________________
+
+# Frequência de corte desejada por amostra
+cutOffFreq = 0.75
+
+# Ordem do filtro Butterworth
+order = 10
+
+# Projetar o filtro Butterworth
+# Os coeficientes ak e bk estão armazenados nos vetores a e b 
+b, a = signal.butter(order, cutOffFreq, btype='low')
+
+#__________________________ Questão 12 _____________________________________
+
+# Calcula a resposta em frequência do filtro Butterworth 
+w, hFreqResponse = signal.freqz(b, a)
+
+plot_graph(w, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência (rad/sample)', 'Amplitude', color='green')
+
 
