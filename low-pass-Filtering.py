@@ -178,3 +178,11 @@ frequencies, groupDelay = signal.group_delay((b, a))
 x = np.linspace(-np.pi, np.pi, len(groupDelay))
 
 plot_graph(x, groupDelay, 'Atraso de Grupo do filtro Butterworth', 'Frequência', 'Atraso de Grupo (samples)', color='green')
+
+#__________________________ Questão 15 _____________________________________
+
+# Realiza a convolução discreta para filtrar o sinal x[n] com o filtro Butterworth 
+Yn_Butterworth = signal.lfilter(b, a, Xn)
+n = np.arange(len(Yn_Butterworth))
+
+plot_graph(n, Yn_Butterworth,  'Sinal de Saída y[n] ( x[n] * Butterworth Filter )', 'Tempo', 'Amplitude')
