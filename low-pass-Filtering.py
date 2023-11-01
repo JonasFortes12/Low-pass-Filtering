@@ -198,3 +198,10 @@ x =  np.linspace(-np.pi, np.pi, len(Yn_Butterworth))
 
 plot_graph(x, Yn_Butterworth, 'Módulo da FT do sinal Y[n] pelo Butterworth', 'Frequência', 'Amplitude', color='black')
 
+#__________________________ Questão 17 _____________________________________
+
+N = 100  # Número de amostras
+n = np.arange(N) # Vetor de amostras de 0 a N-1
+
+plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn_Butterworth, 'Sinal g[n]', 'Sinal y[n-a] Butterworth')
+
