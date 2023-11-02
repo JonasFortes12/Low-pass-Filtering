@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Função para plotagem de gráficos
-def plot_graph(x, y,title, xlabel, ylabel, y2=None, label='',label2='', color='blue', color2='red'):
+def plot_graph(x, y,title, xlabel, ylabel, y2=None, label=None,label2=None, color='blue', color2='red'):
     plt.figure(figsize=(8, 4))
     plt.plot(x, y, label=label, color=color)
     if(y2 is not None):
@@ -16,8 +16,9 @@ def plot_graph(x, y,title, xlabel, ylabel, y2=None, label='',label2='', color='b
     plt.ylabel(ylabel)
     plt.grid(True)
     
-    # Adicionar uma legenda
-    plt.legend()
+    if(label is not None):
+        # Adicionar uma legenda
+        plt.legend()
     
     plt.show()
 
@@ -49,18 +50,17 @@ plot_graph(x, XnFT, 'Módulo da FT do sinal X[n]', 'Frequência', 'Amplitude', c
 
 # Parâmetros do filtro passa-baixa ideal
 cutOffFreq = 0.75 * np.pi # Frequência de corte
-a = 15  # Atraso
+alpha = 15  # Atraso
 # Tamanho da resposta ao impulso
-M = 2 * a  # M = 30
+M = 2 * alpha  # M = 30
 
 # Amostras de 0 até M-1
 n = np.arange(M)
 
+# Resposta ao impulso do filtro passa-baixa FIR
+h_ideal = np.sin(cutOffFreq * (n-alpha)) / (np.pi * (n-alpha))
+h_ideal[alpha] = cutOffFreq / np.pi # Tratar a divisão por zero
 
-# Resposta ao impulso do filtro passa-baixa FIR com janela retangular
-# Normalização por (1 / pi) é uma convenção padrão
-h_ideal = (1 / np.pi) * np.sin(cutOffFreq * (n - a)) / (n - a)
-h_ideal[a] = cutOffFreq / np.pi  # Lidando com a divisão por zero
 
 
 plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Tempo', 'Amplitude')
@@ -68,13 +68,13 @@ plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Te
 
 #__________________________ Questão 04 _____________________________________
 
-# Calcula o módulo da resposta em frequência do sistema (FT da reposta ao impulso h[n])
-h_idealFT = np.abs(np.fft.fftshift(np.fft.fft(h_ideal)))
+# Calcula a resposta em frequência do sistema (FT da reposta ao impulso h[n])
+h_idealFT = np.fft.fftshift(np.fft.fft(h_ideal))
 
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, M)
 
-plot_graph(x, h_idealFT, 'Módulo da Resposta em Frequência do Sistema', 'Frequência', 'Amplitude', color='black')
+plot_graph(x, np.abs(h_idealFT), 'Módulo da Resposta em Frequência do Sistema', 'Frequência', 'Amplitude', color='black')
 
 #__________________________ Questão 05 _____________________________________
 
@@ -98,7 +98,7 @@ plot_graph(x, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample
 #__________________________ Questão 07 _____________________________________
 
 # Realiza a convolução discreta para filtrar o sinal x[n] com a resposta ao impulso h[n]
-Yn = np.convolve(Xn, h_ideal, mode='same') 
+Yn = np.convolve(Xn, h_ideal) 
 n = np.arange(len(Yn))
 
 plot_graph(n, Yn,  'Sinal de Saída y[n] ( x[n]*h[n] )', 'Tempo', 'Amplitude')
@@ -118,7 +118,7 @@ plot_graph(x, YnFT, 'Módulo da FT do sinal Y[n]', 'Frequência', 'Amplitude', c
 
 # Gerando o sinal g[n]
 
-N = 100  # Número de amostras
+N = len(Yn)  # Número de amostras
 n = np.arange(N)  # Vetor de amostras de 0 a N-1
 
 # Frequências desejadas em radianos por amostra
@@ -127,7 +127,12 @@ frequencies = [0.1 * mt.pi, 0.6 * mt.pi]
 # Gera o sinal somando as componentes de frequência
 Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
 
-plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n]', 'Sinal y[n-a]')
+alpha = -15
+
+# Aplica um atraso em y: y[n-a]
+Yn_offset = np.roll(Yn, alpha);
+
+plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn_offset, 'Sinal g[n]', 'Sinal y[n-a]')
 
 #__________________________ Questão 10 _____________________________________
 
@@ -194,14 +199,24 @@ plot_graph(n, Yn_Butterworth,  'Sinal de Saída y[n] ( x[n] * Butterworth Filter
 Yn_ButterworthFT = np.abs(np.fft.fftshift(np.fft.fft(Yn_Butterworth)))
 
 # Definir valores do eixo X
-x =  np.linspace(-np.pi, np.pi, len(Yn_Butterworth))
+x =  np.linspace(-np.pi, np.pi, len(Yn_ButterworthFT))
 
-plot_graph(x, Yn_Butterworth, 'Módulo da FT do sinal Y[n] pelo Butterworth', 'Frequência', 'Amplitude', color='black')
+plot_graph(x, Yn_ButterworthFT, 'Módulo da FT do sinal Y[n] pelo Butterworth', 'Frequência', 'Amplitude', color='black')
 
 #__________________________ Questão 17 _____________________________________
 
-N = 100  # Número de amostras
-n = np.arange(N) # Vetor de amostras de 0 a N-1
+# Gerando o sinal g[n] com 100 amostras
+N = len(Yn_Butterworth)  # Número de amostras
+n = np.arange(N)  # Vetor de amostras de 0 a N-1
 
-plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn_Butterworth, 'Sinal g[n]', 'Sinal y[n-a] Butterworth')
+# Frequências desejadas em radianos por amostra
+frequencies = [0.1 * mt.pi, 0.6 * mt.pi]
 
+# Gera o sinal somando as componentes de frequência
+Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
+
+# Aplica um atraso em y: y[n-nd]
+alpha = -2 # atraso nd
+Yn_Butterworth_offset = np.roll(Yn_Butterworth, alpha);
+
+plot_graph(n, Gn, 'Sinais G[n] e Y[n-nd] (Butterworth)', 'Tempo', 'Amplitude', Yn_Butterworth_offset, 'Sinal g[n]', 'Sinal y[n-a]')
