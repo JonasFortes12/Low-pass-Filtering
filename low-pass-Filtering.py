@@ -92,7 +92,7 @@ frequencies, groupDelay = signal.group_delay((h_ideal, 1))
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, len(groupDelay))
 
-plot_graph(x, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência (rad/sample)', 'Atraso de Grupo (samples)')
+plot_graph(x, groupDelay, 'Atraso de Grupo do Sistema', 'Frequência', 'Atraso de Grupo (samples)')
 
 
 #__________________________ Questão 07 _____________________________________
@@ -127,12 +127,12 @@ frequencies = [0.1 * mt.pi, 0.6 * mt.pi]
 # Gera o sinal somando as componentes de frequência
 Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
 
-alpha = -15
+alpha = 15
 
-# Aplica um atraso em y: y[n-a]
-Yn_offset = np.roll(Yn, alpha);
+# Aplica um atraso em G: G[n-alpha]
+Gn_offset = np.roll(Gn, alpha);
 
-plot_graph(n, Gn, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn_offset, 'Sinal g[n]', 'Sinal y[n-a]')
+plot_graph(n, Gn_offset, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n-alpha]', 'Sinal y[n]')
 
 #__________________________ Questão 10 _____________________________________
 
@@ -161,7 +161,7 @@ w, hFreqResponse = signal.freqz(b, a)
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, len(hFreqResponse))
 
-plot_graph(x, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência (rad/sample)', 'Amplitude', color='green')
+plot_graph(x, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência', 'Amplitude', color='green')
 
 
 #__________________________ Questão 13 _____________________________________
