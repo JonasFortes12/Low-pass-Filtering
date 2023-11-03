@@ -4,11 +4,18 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Função para plotagem de gráficos
-def plot_graph(x, y,title, xlabel, ylabel, y2=None, label=None,label2=None, color='blue', color2='red'):
+def plot_graph(x, y,title, xlabel, ylabel, y2=None, label=None,label2=None, color='blue', color2='red', mode='plot'):
     plt.figure(figsize=(8, 4))
-    plt.plot(x, y, label=label, color=color)
-    if(y2 is not None):
-        plt.plot(x, y2, label=label2, color=color2)
+    
+    if(mode == 'plot'):
+        plt.plot(x, y, label=label, color=color)
+        if(y2 is not None):
+            plt.plot(x, y2, label=label2, color=color2)
+    elif(mode == 'stem'):
+        plt.stem(x, y, label=label)
+        if(y2 is not None):
+            plt.stem(x, y2, label=label2)
+    
     # Adicionar um título ao gráfico
     plt.title(title)
     # Adicionar rótulos aos eixos
@@ -52,18 +59,17 @@ plot_graph(x, XnFT, 'Módulo da FT do sinal X[n]', 'Frequência', 'Amplitude', c
 cutOffFreq = 0.75 * np.pi # Frequência de corte
 alpha = 15  # Atraso
 # Tamanho da resposta ao impulso
-M = 2 * alpha  # M = 30
+M = (2 * alpha) + 1  # M = 30 
 
-# Amostras de 0 até M-1
+# Amostras de 0 até M (31 amostras)
 n = np.arange(M)
 
 # Resposta ao impulso do filtro passa-baixa FIR
 h_ideal = np.sin(cutOffFreq * (n-alpha)) / (np.pi * (n-alpha))
-h_ideal[alpha] = cutOffFreq / np.pi # Tratar a divisão por zero
+h_ideal[alpha] = 1 # Tratar a divisão por zero (definição do sinc)
 
 
-
-plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Tempo', 'Amplitude')
+plot_graph(n, h_ideal, 'Resposta ao Impulso do Filtro Passa-Baixa FIR h[n]', 'Tempo', 'Amplitude', mode='stem')
 
 
 #__________________________ Questão 04 _____________________________________
@@ -79,7 +85,7 @@ plot_graph(x, np.abs(h_idealFT), 'Módulo da Resposta em Frequência do Sistema'
 #__________________________ Questão 05 _____________________________________
 
 # Calcula a resposta em fase da resposta em frequência do sistema
-phase_h_idealFT = np.angle(h_idealFT)
+phase_h_idealFT = np.unwrap(np.angle(h_idealFT))
 
 plot_graph(x, phase_h_idealFT, 'Resposta em Fase do Sistema', 'Frequência', 'Amplitude', color='green')
 
@@ -130,28 +136,30 @@ Gn = np.sum([np.cos(omega * n) for omega in frequencies], axis=0)
 alpha = 15
 
 # Aplica um atraso em G: G[n-alpha]
-Gn_offset = np.roll(Gn, alpha);
+Gn_offset = np.roll(Gn, alpha)
 
 plot_graph(n, Gn_offset, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn, 'Sinal g[n-alpha]', 'Sinal y[n]')
 
 #__________________________ Questão 10 _____________________________________
-
-# Explicar aqui quais as vantagens e desvantagens 
-# deste filtro FIR a partir dos gráficos gerados até o momento
+"""
+    O filtro FIR (Finite Impulse Response) tem como vantagem uma resposta em frequência precisa e nítida,
+pois possue uma resposta em frequência caracterizada por uma magnitude retangular (idealmente).
+Isso significa que a magnitude da resposta é constante na faixa de passagem e cai abruptamente para zero na faixa de rejeição.
+"""
 
 
 
 #__________________________ Questão 11 _____________________________________
 
 # Frequência de corte desejada por amostra
-cutOffFreq = 0.75
+cutOffFreq_Hz = 0.75 / (2 * np.pi) #frequência em Hz
 
 # Ordem do filtro Butterworth
 order = 10
 
 # Projetar o filtro Butterworth
 # Os coeficientes ak e bk estão armazenados nos vetores a e b 
-b, a = signal.butter(order, cutOffFreq, btype='low')
+b, a = signal.butter(order, cutOffFreq_Hz, btype='low')
 
 #__________________________ Questão 12 _____________________________________
 
@@ -161,13 +169,13 @@ w, hFreqResponse = signal.freqz(b, a)
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, len(hFreqResponse))
 
-plot_graph(x, hFreqResponse, 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência', 'Amplitude', color='green')
+plot_graph(x, np.abs(hFreqResponse), 'Módulo da Resposta em Frequência do Filtro Butterworth', 'Frequência', 'Amplitude', color='green')
 
 
 #__________________________ Questão 13 _____________________________________
 
 # Calcula a resposta em fase da resposta em frequência do filtro Butterworth 
-phase_hFreqResponse = np.angle(hFreqResponse)
+phase_hFreqResponse = np.unwrap(np.angle(hFreqResponse))
 
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, len(phase_hFreqResponse))
