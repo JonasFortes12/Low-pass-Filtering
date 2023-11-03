@@ -246,4 +246,9 @@ em toda a faixa de frequência, como é observado no gráfico da questão 13.
 de frequência do sinal podem ser atrasados de maneira diferente. Isso pode levar a distorções na forma de onda
 do sinal, pois diferentes partes do sinal são atrasadas de maneira desigual. 
 Como é observado no gráfico da questão 14.
+
+    Ao comparar os filtros FIR e IIR, percebe-se que o filtro FIR tem respostas em frequência precisas, 
+respostas em fase lineares e atraso de grupo constante. Por outro lado, o filtro IIR 
+é mais flexível em termo de respostas em frequência, mas podem introduzir
+distorções de fase e atrasos de grupo variáveis.
 '''
