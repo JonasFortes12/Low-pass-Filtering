@@ -144,22 +144,29 @@ plot_graph(n, Gn_offset, 'Sinais G[n] e Y[n-a]', 'Tempo', 'Amplitude', Yn, 'Sina
 """
     O filtro FIR (Finite Impulse Response) tem como vantagem uma resposta em frequência precisa e nítida,
 pois possue uma resposta em frequência caracterizada por uma magnitude retangular (idealmente).
-Isso significa que a magnitude da resposta é constante na faixa de passagem e cai abruptamente para zero na faixa de rejeição.
-"""
+Isso significa que a magnitude da resposta é constante na faixa de passagem e cai abruptamente
+para zero na faixa de rejeição, como é notado no gráfico da questão 04. Outra vantagem é que sua resposta 
+em fase é previsível (linear), como é percebido nn gráfico da questão 05. Também, o atraso de grupo é 
+constante, como mostra o gráfico da questão 06. Essas vantagens possibilitam que esse filtro seja facilmente
+projetado, apresentando ótima estabilidade e menos suscetível a problemas. 
 
+A desvantagem é que requer um número maior de coeficientes para alcançar respostas em frequência complexas. 
+Assim, pode exigir mais recursos computacionais para implementação em tempo real
+
+"""
 
 
 #__________________________ Questão 11 _____________________________________
 
 # Frequência de corte desejada por amostra
-cutOffFreq_Hz = 0.75 / (2 * np.pi) #frequência em Hz
+cutOffFreq = 0.75
 
 # Ordem do filtro Butterworth
 order = 10
 
 # Projetar o filtro Butterworth
 # Os coeficientes ak e bk estão armazenados nos vetores a e b 
-b, a = signal.butter(order, cutOffFreq_Hz, btype='low')
+b, a = signal.butter(order, cutOffFreq, btype='low')
 
 #__________________________ Questão 12 _____________________________________
 
@@ -228,3 +235,14 @@ alpha = -2 # atraso nd
 Yn_Butterworth_offset = np.roll(Yn_Butterworth, alpha);
 
 plot_graph(n, Gn, 'Sinais G[n] e Y[n-nd] (Butterworth)', 'Tempo', 'Amplitude', Yn_Butterworth_offset, 'Sinal g[n]', 'Sinal y[n-a]')
+
+#__________________________ Questão 18 _____________________________________
+'''
+
+
+
+
+
+
+
+'''
