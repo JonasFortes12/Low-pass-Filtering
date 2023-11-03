@@ -152,9 +152,7 @@ projetado, apresentando ótima estabilidade e menos suscetível a problemas.
 
 A desvantagem é que requer um número maior de coeficientes para alcançar respostas em frequência complexas. 
 Assim, pode exigir mais recursos computacionais para implementação em tempo real
-
 """
-
 
 #__________________________ Questão 11 _____________________________________
 
@@ -192,7 +190,7 @@ plot_graph(x, phase_hFreqResponse, 'Resposta em Fase do filtro Butterworth', 'Fr
 #__________________________ Questão 14 _____________________________________
 
 # Calcula o atraso de grupo do filtro Butterworth 
-frequencies, groupDelay = signal.group_delay((b, a))
+frequencies, groupDelay = signal.group_delay((b, a), x, whole=True)
 
 # Definir valores do eixo X
 x = np.linspace(-np.pi, np.pi, len(groupDelay))
@@ -238,11 +236,14 @@ plot_graph(n, Gn, 'Sinais G[n] e Y[n-nd] (Butterworth)', 'Tempo', 'Amplitude', Y
 
 #__________________________ Questão 18 _____________________________________
 '''
-
-
-
-
-
-
-
+    O filtro IIR (Infinite Impulse Response), Butterworth, apresenta a vantagem de uma resposta em frequência 
+suave,ou seja, sua resposta em frequência tende a ser menos abrupta na transição entre a faixa de passagem 
+e a de rejeição, como é observado no gráfico da questão 12.
+    Tem a desvantagem de ter uma resposta em fase não linear devido à presença de polos. Isso pode levar a 
+distorçõesde fase, especialmente perto das frequências de corte. A resposta em fase do filtro não é linear
+em toda a faixa de frequência, como é observado no gráfico da questão 13.
+    Outra desvantagem desse filtro é ter um atraso de grupo variável, o que significa que diferentes componentes
+de frequência do sinal podem ser atrasados de maneira diferente. Isso pode levar a distorções na forma de onda
+do sinal, pois diferentes partes do sinal são atrasadas de maneira desigual. 
+Como é observado no gráfico da questão 14.
 '''
